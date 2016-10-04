@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:h="http://java.sun.com/jsf/html">
+<f:view>
+
+   <f:loadBundle basename="mylib.Messages" var="messages" />
+    <h:head>
+      
+        <title>#{messages.title}</title>
+    </h:head>
+    <h:body bgcolor="white">
+
+      <h:form id="helloForm" >
+<h:commandLink id="fr" value="#{messages.french}">
+ <f:actionListener type="mylib.LanguageChangedActionEvent" />
+</h:commandLink>
+<h:commandLink id="de" value="#{messages.german}">
+ <f:actionListener type="mylib.LanguageChangedActionEvent" />
+</h:commandLink>
+<h:commandLink id="en" value="#{messages.english}">
+ <f:actionListener type="mylib.LanguageChangedActionEvent" />
+</h:commandLink>
+<br />
+
+<h1>#{messages.title}</h1>
+        <h2>#{messages.message}</h2>
+        #{messages.question}
+
+
+
+<h:inputText id="username" value="#{helloBean.name}"/>
+            <h:commandButton id="submit" action="#{helloBean.response}" value="Submit"/>
+
+</h:form>
+    </h:body>
+</f:view>
+</html>
