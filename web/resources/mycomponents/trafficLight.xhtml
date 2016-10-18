@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+			xmlns:t="http://myfaces.apache.org/tomahawk"
+			xmlns:p="http://java.sun.com/jsf/composite">
+	<h:head>
+	</h:head>
+	<h:body>
+		<p:interface>
+			<p:attribute name="value" />
+		</p:interface>
+		<p:implementation>
+			<h:form id="trafficLightForm">
+				<c:choose>
+					<c:when test="#{cc.attrs.value lt 0}">
+						<h:commandButton id="redLight" image="#{resource['images:redlight.gif']}" alt="red light" action="#{trafficBean.next}" />
+					</c:when>
+					<c:when test="#{cc.attrs.value eq 0}">
+						<h:commandButton id="yellowLight" image="#{resource['images:yellowlight.gif']}" alt="yellow light" action="#{trafficBean.next}" />
+					</c:when>
+					<c:otherwise>
+						<h:commandButton id="greenLight" image="#{resource['images:greenlight.gif']}" alt="green light" action="#{trafficBean.next}" />
+					</c:otherwise>
+				</c:choose>
+			</h:form>
+		</p:implementation>
+	</h:body>
+</html>

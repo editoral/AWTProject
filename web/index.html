@@ -1,0 +1,96 @@
+<!--<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+		<div class="jumbotron">
+			<div class="container">
+				<h1> {msg.MainTitle}</h1>
+			</div>
+		</div>
+		<div class="container">
+
+            <p class="lead">
+                <code>JSF login application </code> <br/>
+				{msg.loginPresentation}
+			</p>
+			<ul>
+				<li><a href="faces/login.xhtml">Login</a></li>
+
+			</ul>
+		</div>
+  </body>
+</html>-->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+			xmlns:t="http://myfaces.apache.org/tomahawk">
+	<f:view locale="#{localeBean.locale}">
+		<f:loadBundle basename="resources.messages.messages" var="msg" />
+		<h:head>
+			<title>#{msg.ApplicationName}</title>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+			<h:outputStylesheet name="css/login.css" />
+			<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		</h:head>
+		<h:body>
+			<header class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+							<span class="sr-only">#{msg.NavigationToggle}</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<h:link outcome="home" class="navbar-brand">#{msg.ApplicationName}</h:link>
+					</div>
+					<div class="collapse navbar-collapse" id="navbar-collapse">
+						<nav>
+							<ul class="nav navbar-nav">
+								<li><h:link outcome="home">#{msg.HomeTitle}</h:link></li>
+								<c:if test="#{not empty loginBean.user}">
+									<li><h:link outcome="secret">#{msg.AccountsTitle}</h:link></li>
+								</c:if>
+							</ul>
+						</nav>
+						<h:form id="navLocaleForm" class="navbar-text navbar-right">
+							<h:commandLink action="#{localeBean.setLanguage('fr', 'hello')}" value="Français" /> |
+							<h:commandLink action="#{localeBean.setLanguage('de', 'hello')}" value="Deutsch" /> |
+							<h:commandLink action="#{localeBean.setLanguage('en', 'hello')}" value="English" />
+						</h:form>
+					</div>
+				</div>
+			</header>
+			<div class="container">
+				<div class="row">
+					<main class="col-md-9">
+						<ui:insert name="main"/>
+					</main>
+					<aside class="col-md-3">
+						<ui:insert name="aside"/>
+					</aside>
+				</div>
+			</div>
+			<footer class="navbar navbar-default navbar-fixed-bottom">
+				<div class="container">
+					<p class="navbar-text">
+						&#169; 2015 #{msg.ApplicationCopyrightOwner}
+					</p>
+
+				</div>
+			</footer>
+		</h:body>
+	</f:view>
+</html>
