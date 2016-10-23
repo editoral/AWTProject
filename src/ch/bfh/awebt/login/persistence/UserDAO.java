@@ -1,98 +1,55 @@
 package ch.bfh.awebt.login.persistence;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.util.List;
+import ch.bfh.awebt.login.MapBuilder;
+import ch.bfh.awebt.login.Streams;
+import ch.bfh.awebt.login.persistence.data.User;
 
-public class UserDAO {
+/**
+ * Represents a data access object for user
+ *
+ *
+ */
+public class UserDAO extends GenericDAO<User, Integer> implements Serializable {
 
-	private Connection getConnection() throws SQLException {
+	private static final long serialVersionUID = 7855160381047946895L;
 
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		} catch (ClassNotFoundException ex) {
-			throw new SQLException("Could not load JDBC driver.", ex);
-		}
-
-		return DriverManager.getConnection("jdbc:sqlserver://", "AWebT", "AWebT");
+	@Override
+	protected Class<User> getEntityClass() {
+		return User.class;
 	}
 
-	public User create(User entity) throws SQLException {
+	/**
+	 * Gets all users ordered by their login.
+	 *
+	 * @return a list of all users
+	 */
+	public List<User> findAllOrderedByLogin() {
 
-		try (Connection con = this.getConnection();
-				 PreparedStatement stmIns = con.prepareStatement("insert tblUsers(usrLogin, usrPassword, usrDateOfBirth) values(?, ?, ?)");
-				 PreparedStatement stmSel = con.prepareStatement("select usrID from tblUsers where usrLogin=?")) {
-
-			stmIns.setString(1, entity.getLogin());
-			stmIns.setBytes(2, entity.getPasswordHash());
-			stmIns.setString(3, entity.getDateOfBirth().toString());
-			stmIns.executeUpdate();
-
-			stmSel.setString(1, entity.getLogin());
-			try (ResultSet res = stmSel.executeQuery()) {
-				if (res.next())
-					entity.setId(res.getInt("usrID"));
-			}
-		}
-
-		return entity;
+		return findByQuery(User.FIND_ALL_ORDERED_BY_LOGIN_QUERY);
 	}
 
-	public User findByID(int id) throws SQLException {
+	/**
+	 * Finds all managers ordered by their login.
+	 *
+	 * @return a list of all managers
+	 */
+	public List<User> findManagersOrderedByLogin() {
 
-		try (Connection con = this.getConnection();
-				 PreparedStatement stm = con.prepareStatement("select usrID, usrLogin, usrPassword from tblUsers where usrID=?")) {
-
-			stm.setInt(1, id);
-			try (ResultSet res = stm.executeQuery()) {
-				if (res.next())
-					return new User(res.getInt("usrID"), res.getString("usrLogin"), res.getBytes("usrPassword"), LocalDate.parse(res.getString("usrDateOfBirth")));
-			}
-		}
-
-		return null;
+		return findByQuery(User.FIND_MANAGERS_ORDERED_BY_LOGIN_QUERY);
 	}
 
-	public User findByLogin(String login) throws SQLException {
+	/**
+	 * Finds a user by its unique login.
+	 *
+	 * @param login unique login of the user
+	 *
+	 * @return user with the specified login or  null 
+	 */
+	public User findByLogin(String login) {
 
-		try (Connection con = this.getConnection();
-				 PreparedStatement stm = con.prepareStatement("select usrID, usrLogin, usrPassword, usrDateOfBirth from tblUsers where usrLogin=?")) {
-
-			stm.setString(1, login);
-			try (ResultSet res = stm.executeQuery()) {
-				if (res.next())
-					return new User(res.getInt("usrID"), res.getString("usrLogin"), res.getBytes("usrPassword"), LocalDate.parse(res.getString("usrDateOfBirth")));
-			}
-		}
-
-		return null;
-	}
-
-	public User update(User entity) throws SQLException {
-
-		try (Connection con = this.getConnection();
-				 PreparedStatement stm = con.prepareStatement("update tblUsers set usrLogin=?, usrPassword=?, usrDateOfBirth=? where usrID=?")) {
-
-			stm.setString(1, entity.getLogin());
-			stm.setBytes(2, entity.getPasswordHash());
-			stm.setString(3, entity.getDateOfBirth().toString());
-			stm.setInt(4, entity.getId());
-			stm.executeUpdate();
-		}
-
-		return entity;
-	}
-
-	public void delete(User entity) throws SQLException {
-
-		try (Connection con = this.getConnection();
-				 PreparedStatement stm = con.prepareStatement("delete tblUsers where usrID=?")) {
-
-			stm.setInt(1, entity.getId());
-			stm.executeUpdate();
-		}
+		return findByQuery(User.FIND_BY_LOGIN_QUERY, MapBuilder.single("login", login))
+			.stream().collect(Streams.nullableSingleCollector());
 	}
 }

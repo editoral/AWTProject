@@ -3,4 +3,10 @@
 3)web: localhost:8080
 4)id/pw: manager/manager
 5)select project link
-6) git select project + ant deploy
+6) git select project + ant redeploy
+
+
+mySQL: 
+-start apache: C:\xampp/xampp-control.exe
+-start mySQL on C:\xampp/xampp-control.exe
+-create a database jsflogin on localhost/phpmyadmin

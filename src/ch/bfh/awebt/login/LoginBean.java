@@ -8,7 +8,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import ch.bfh.awebt.login.persistence.User;
+import ch.bfh.awebt.login.persistence.data.User;
 import ch.bfh.awebt.login.persistence.UserDAO;
 
 @ManagedBean
