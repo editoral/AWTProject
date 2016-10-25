@@ -1,7 +1,7 @@
 
-<project name="JSF Login" default="compile" basedir=".">
+<project name="Examples of a internationalized login form in JSF 2.0" default="compile" basedir=".">
 
-
+ 
 
 <!-- ===================== Property Definitions =========================== -->
 
@@ -62,8 +62,8 @@
 -->
 
   <!-- <property file="${user.home}/.ant-global.properties"/> -->
-  <property file="./build.properties"/>
-  <property name="app.name"      value="JSFLogin"/>
+  <property file="build.properties"/>
+  <property name="app.name"      value="logini18n2.0"/>
   <property name="app.version"   value="1.0"/>
   <property name="build.home"    value="build"/>
   <!-- The following properties must be defined in
@@ -115,6 +115,13 @@
 
 -->
 
+<!-- Dummy external dependency -->
+<!--
+  <property name="foo.jar"
+           value="/path/to/foo.jar"/>
+-->
+
+
 <!-- ==================== Compilation Classpath =========================== -->
 
 <!--
@@ -131,10 +138,18 @@
   <path id="compile.classpath">
 
     <!-- Include all JAR files that will be included in /WEB-INF/lib -->
-    <fileset dir="${build.home}/WEB-INF/lib">
+    <!-- *** CUSTOMIZE HERE AS REQUIRED BY YOUR APPLICATION *** -->
+<!--
+    <pathelement location="${foo.jar}"/>
+-->
+
+    <pathelement location="lib"/>
+    <fileset dir="lib">
       <include name="*.jar"/>
     </fileset>
+
     <!-- Include all elements that Tomcat exposes to applications -->
+    <pathelement location="${catalina.home}/classes"/>
     <fileset dir="${catalina.home}/lib">
       <include name="*.jar"/>
     </fileset>
@@ -194,8 +209,7 @@
           destdir="${build.home}/WEB-INF/classes"
            debug="${compile.debug}"
      deprecation="${compile.deprecation}"
-        optimize="${compile.optimize}"
-includeantruntime="false">
+        optimize="${compile.optimize}">
         <classpath refid="compile.classpath"/>
     </javac>
 
@@ -313,29 +327,34 @@ includeantruntime="false">
 
   Normally, this task is executed indirectly when needed.
 
-	-->
+-->
 
-	<target name="prepare">
+  <target name="prepare">
 
-		<!-- Create build directory and copy static content -->
-		<mkdir  dir="${build.home}"/>
-		<copy todir="${build.home}">
-			<fileset dir="web"/>
-		</copy>
+    <!-- Create build directory and copy static content -->
+    <mkdir  dir="${build.home}"/>
+    <copy todir="${build.home}">
+      <fileset dir="web"/>
+    </copy>
 
-		<!-- Copy external dependencies as required -->
-		<!-- *** CUSTOMIZE HERE AS REQUIRED BY YOUR APPLICATION *** -->
-		<mkdir  dir="${build.home}/WEB-INF/lib"/>
-		<!--
-				<copy todir="${build.home}/WEB-INF/lib" file="${foo.jar}"/>
-		-->
+    <!-- Copy external dependencies as required -->
+    <!-- *** CUSTOMIZE HERE AS REQUIRED BY YOUR APPLICATION *** -->
+    <mkdir  dir="${build.home}/WEB-INF/lib"/>
+<!--
+    <copy todir="${build.home}/WEB-INF/lib" file="${foo.jar}"/>
+-->
+
+    <!-- Copy library definitions     -->
+    <copy    todir="${build.home}/WEB-INF/lib">
+      <fileset dir="lib"
+               includes="*.jar"/>
+    </copy>
 
 
-		<!-- Copy static files from external dependencies as needed -->
+    <!-- Copy static files from external dependencies as needed -->
+
+  </target>
 
 
-	</target>
-
-	<target name="redeploy" depends="clean,undeploy,deploy" />
 
 </project>

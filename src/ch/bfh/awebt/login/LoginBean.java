@@ -104,11 +104,11 @@ public class LoginBean implements Serializable {
 				&& this._userPassword != null && this._userPassword.length > 0
 				&& this._userDateOfBirth != null)
 			try {
-				this.getUserDAO().create(this.user = new User(this._userLogin, this._userPassword, this._userDateOfBirth));
+				this.user = new User(this._userLogin, this._userPassword);
 				this._userPassword = null;
 				this._userDateOfBirth = null;
 
-			} catch (NoSuchAlgorithmException | SQLException ex) {
+			} catch (NoSuchAlgorithmException ex) {
 				this.error = ErrorType.DATABASE;
 			}
 
@@ -131,7 +131,7 @@ public class LoginBean implements Serializable {
 			} else
 				this.error = ErrorType.INCORRECT_INFORMATION;
 
-		} catch (NoSuchAlgorithmException | SQLException ex) {
+		} catch (NoSuchAlgorithmException ex) {
 			this.error = ErrorType.DATABASE;
 		}
 
