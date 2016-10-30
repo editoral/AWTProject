@@ -320,7 +320,7 @@ includeantruntime="false">
 		<!-- Create build directory and copy static content -->
 		<mkdir  dir="${build.home}"/>
 		<copy todir="${build.home}">
-			<fileset dir="web"/>
+			<fileset dir="WebContent"/>
 		</copy>
 
 		<!-- Copy external dependencies as required -->

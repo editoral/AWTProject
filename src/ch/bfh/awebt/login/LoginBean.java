@@ -39,7 +39,6 @@ public class LoginBean implements Serializable {
 
 	private String _userLogin;
 	private char[] _userPassword;
-	private LocalDate _userDateOfBirth;
 
 	private ErrorType error;
 
@@ -76,22 +75,6 @@ public class LoginBean implements Serializable {
 		this._userPassword = password.toCharArray();
 	}
 
-	public LocalDate getDateOfBirth() {
-		return this._userDateOfBirth;
-	}
-
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this._userDateOfBirth = dateOfBirth;
-	}
-
-	public Date getDateOfBirthAsDate() {
-		return this._userDateOfBirth != null ? Date.from(this._userDateOfBirth.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
-	}
-
-	public void setDateOfBirthAsDate(Date dateOfBirth) {
-		this._userDateOfBirth = dateOfBirth != null ? dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null;
-	}
-
 	public ErrorType getError() {
 		return this.error;
 	}
@@ -101,12 +84,11 @@ public class LoginBean implements Serializable {
 		this.error = null;
 
 		if (this._userLogin != null && this._userLogin.length() > 0
-				&& this._userPassword != null && this._userPassword.length > 0
-				&& this._userDateOfBirth != null)
+				&& this._userPassword != null && this._userPassword.length > 0)
 			try {
 				this.user = new User(this._userLogin, this._userPassword);
+				this.getUserDAO().persist(this.user);
 				this._userPassword = null;
-				this._userDateOfBirth = null;
 
 			} catch (NoSuchAlgorithmException ex) {
 				this.error = ErrorType.DATABASE;

@@ -123,7 +123,7 @@ public class User extends PersistentObject<Integer> implements Serializable {
 	 *
 	 * @param id unique identifier of the user
 	 */
-	protected void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -143,7 +143,7 @@ public class User extends PersistentObject<Integer> implements Serializable {
 	 *
 	 * @return hashed password of the user
 	 */
-	byte[] getPasswordHash() {
+	public byte[] getPasswordHash() {
 
 		return Arrays.copyOf(passwordHash, passwordHash.length);
 	}

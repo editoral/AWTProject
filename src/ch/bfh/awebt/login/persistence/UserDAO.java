@@ -1,10 +1,17 @@
 package ch.bfh.awebt.login.persistence;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
+
 import ch.bfh.awebt.login.MapBuilder;
 import ch.bfh.awebt.login.Streams;
 import ch.bfh.awebt.login.persistence.data.User;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 
 /**
  * Represents a data access object for user
@@ -19,7 +26,35 @@ public class UserDAO extends GenericDAO<User, Integer> implements Serializable {
 	protected Class<User> getEntityClass() {
 		return User.class;
 	}
+	/*private Connection getConnection() throws SQLException {
 
+		try {
+			Class.forName("mysql server");
+		} catch (ClassNotFoundException ex) {
+			throw new SQLException("Could not load JDBC driver.", ex);
+		}
+
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306", "JSFlogin", "JSFLogin");
+	}
+	public User create(User entity) throws SQLException {
+
+		try (Connection con = this.getConnection();
+				 PreparedStatement stmIns = con.prepareStatement("insert Users(login, password) values(?, ?, ?)");
+				 PreparedStatement stmSel = con.prepareStatement("select id from Users where login=?")) {
+
+			stmIns.setString(1, entity.getLogin());
+			stmIns.setBytes(2, entity.getPasswordHash());
+			stmIns.executeUpdate();
+
+			stmSel.setString(1, entity.getLogin());
+			try (ResultSet res = stmSel.executeQuery()) {
+				if (res.next())
+					entity.setId(res.getInt("id"));
+			}
+		}
+
+		return entity;
+	}*/
 	/**
 	 * Gets all users ordered by their login.
 	 *
