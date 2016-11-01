@@ -97,7 +97,7 @@ public class LoginBean implements Serializable {
 		else
 			this.error = ErrorType.MISSING_INFORMATION;
 
-		return "register?faces-redirect=true";
+		return "accountList?faces-redirect=true";
 	}
 
 	public String login() {
@@ -108,7 +108,7 @@ public class LoginBean implements Serializable {
 			User user = this.getUserDAO().findByLogin(this._userLogin);
 			if (user != null && user.validatePassword(this._userPassword)) {
 				this.user = user;
-				return "secret?faces-redirect=true";
+				return "accountList?faces-redirect=true";
 
 			} else
 				this.error = ErrorType.INCORRECT_INFORMATION;
@@ -117,7 +117,7 @@ public class LoginBean implements Serializable {
 			this.error = ErrorType.DATABASE;
 		}
 
-		return "home?faces-redirect=true";
+		return "accountList?faces-redirect=true";
 	}
 
 	public String logout() {
@@ -128,6 +128,6 @@ public class LoginBean implements Serializable {
 		this._userLogin = null;
 		this._userPassword = null;
 
-		return "home?faces-redirect=true";
+		return "accountList?faces-redirect=true";
 	}
 }

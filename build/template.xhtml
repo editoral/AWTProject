@@ -26,14 +26,13 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<h:link outcome="home" class="navbar-brand">#{msg.ApplicationName}</h:link>
+						<h:link outcome="login" class="navbar-brand">#{msg.ApplicationName}</h:link>
 					</div>
 					<div class="collapse navbar-collapse" id="navbar-collapse">
 						<nav>
 							<ul class="nav navbar-nav">
-								<li><h:link outcome="home">#{msg.HomeTitle}</h:link></li>
 								<c:if test="#{not empty loginBean.user}">
-									<li><h:link outcome="secret">#{msg.AccountsTitle}</h:link></li>
+									<li><h:link outcome="accountList">#{msg.AccountsTitle}</h:link></li>
 								</c:if>
 							</ul>
 						</nav>
