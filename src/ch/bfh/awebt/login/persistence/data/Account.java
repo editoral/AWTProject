@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQuery(name="Account.findAll", query="SELECT a FROM Account a")
-public class Account implements Serializable {
+public class Account extends PersistentObject<Integer> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,8 +33,8 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public int getId() {
-		return this.id;
+	public Integer getId() {
+		return id;
 	}
 
 	public void setId(int id) {

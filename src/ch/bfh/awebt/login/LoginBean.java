@@ -1,17 +1,14 @@
 package ch.bfh.awebt.login;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import ch.bfh.awebt.login.persistence.data.User;
-import ch.bfh.awebt.login.persistence.UserDAO;
+import javax.faces.context.FacesContext;
 
-@ManagedBean
+import ch.bfh.awebt.login.model.User;
+
+@ManagedBean(name="loginBean", eager=true)
 @SessionScoped
 public class LoginBean implements Serializable {
 
@@ -19,7 +16,8 @@ public class LoginBean implements Serializable {
 
 		DATABASE("ErrorDatabase"),
 		MISSING_INFORMATION("LoginErrorMissingInformation"),
-		INCORRECT_INFORMATION("LoginErrorIncorrectInformation");
+		INCORRECT_INFORMATION("LoginErrorIncorrectInformation"),
+		USER_EXISTS("UserExists");
 
 		private String message;
 
@@ -34,21 +32,12 @@ public class LoginBean implements Serializable {
 		}
 	}
 
-	private UserDAO userDAO;
 	private User user;
 
 	private String _userLogin;
-	private char[] _userPassword;
+	private String _userPassword;
 
 	private ErrorType error;
-
-	private UserDAO getUserDAO() {
-
-		if (this.userDAO == null)
-			this.userDAO = new UserDAO();
-
-		return this.userDAO;
-	}
 
 	public boolean isLoggedIn() {
 		return this.user != null;
@@ -59,7 +48,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public String getLogin() {
-		return this.user != null ? this.user.getLogin() : this._userLogin;
+		return this.user != null ? this.user.getUsername() : this._userLogin;
 	}
 
 	public void setLogin(String login) {
@@ -72,7 +61,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		this._userPassword = password.toCharArray();
+		this._userPassword = password;
 	}
 
 	public ErrorType getError() {
@@ -82,40 +71,47 @@ public class LoginBean implements Serializable {
 	public String register() {
 
 		this.error = null;
-
 		if (this._userLogin != null && this._userLogin.length() > 0
-				&& this._userPassword != null && this._userPassword.length > 0)
+				&& this._userPassword != null && this._userPassword.length() > 0) {
+			this.user = new User();
+			this.user.setUsername(this._userLogin);
+			this.user.setPassword(this._userPassword);
 			try {
-				this.user = new User(this._userLogin, this._userPassword);
-				this.getUserDAO().persist(this.user);
-				this._userPassword = null;
-
-			} catch (NoSuchAlgorithmException ex) {
+				if(!this.user.save()) {
+					this._userLogin = null;
+					this.user = null;
+					this.error = ErrorType.USER_EXISTS;
+				}
+				return "accountList?faces-redirect=true";
+			} catch (Exception e) {
 				this.error = ErrorType.DATABASE;
-			}
-
-		else
+			};
+			this._userPassword = null;
+		} else {
 			this.error = ErrorType.MISSING_INFORMATION;
+		}
 
-		return "accountList?faces-redirect=true";
+		return "";
 	}
 
 	public String login() {
 
 		this.error = null;
 
+		User user = new User();
+		boolean success = false;
 		try {
-			User user = this.getUserDAO().findByLogin(this._userLogin);
-			if (user != null && user.validatePassword(this._userPassword)) {
-				this.user = user;
-				return "accountList?faces-redirect=true";
-
-			} else
-				this.error = ErrorType.INCORRECT_INFORMATION;
-
-		} catch (NoSuchAlgorithmException ex) {
+			success = user.loadUser(this._userLogin);
+		} catch (Exception e) {
 			this.error = ErrorType.DATABASE;
 		}
+		if (success && user != null && user.validatePassword(this._userPassword)) {
+			this.user = user;
+			return "accountList?faces-redirect=true";
+
+		} else
+			this.error = ErrorType.INCORRECT_INFORMATION;
+
 
 		return "accountList?faces-redirect=true";
 	}
@@ -123,11 +119,17 @@ public class LoginBean implements Serializable {
 	public String logout() {
 
 		this.error = null;
-
 		this.user = null;
 		this._userLogin = null;
 		this._userPassword = null;
 
 		return "accountList?faces-redirect=true";
+	}
+	
+	public void redirectIfNotAuthenticated() throws IOException {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		if(!isLoggedIn()) {
+			fc.getExternalContext().redirect("login.xhtml");
+		}	
 	}
 }

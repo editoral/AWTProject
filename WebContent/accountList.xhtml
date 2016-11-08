@@ -12,42 +12,60 @@
 			<div class="panel panel-danger">
 				<div class="panel-heading">
 					<h2 class="panel-title">#{msg.AccountsTitle}</h2>
+					<h:form>
+						<h:commandButton id="createAccount" action="#{accountBean.createForm}" class="btn btn-default" value="#{msg.AccountCreateButton}" />
+					</h:form>
 				</div>
 				<div class="panel-body">
 					#{msg.AccountsContent}
+			       <h:form>
+			       		<div class="row">
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accTitle}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accWebsite}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accUsername}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accPassword}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.actions}" style="font-weight:bold" />
+			          		</div>
+			            </div>
+			          <ui:repeat var="acc" value="#{accountBean.accountList}">
+			          	<div class="row">
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.title}" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.website}" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.username}" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.password}" />
+			          		</div>
+			          		<div class="col-md-4">
+			          			<div class="btn-toolbar">
+									<h:commandButton action="#{accountBean.edit}" value="#{msg.editButton}" class="btn btn-primary">
+										<f:param name="action" value="#{acc.id}" />
+									</h:commandButton>
+				          			<h:commandButton action="#{accountBean.delete}" value="#{msg.deleteButton}" class="btn btn-primary">
+										<f:param name="action" value="#{acc.id}" />
+									</h:commandButton>	
+								</div>							
+			          		</div>
+			            </div>
+			          </ui:repeat>
+			        </h:form>
 				</div>
 			</div>
 		</h:panelGroup>
-		<h:panelGroup layout="block" rendered="#{empty loginBean.user}">
-			<h2>#{msg.LoginTitle}</h2>
-			<h:form id="loginForm" class="form-horizontal" rendered="#{empty loginBean.user}">
-				<div class="form-group#{not empty loginBean.error ? ' has-error' : ''}">
-					<h:outputLabel for="loginField" class="col-sm-2 control-label">#{msg.LoginLoginLabel}</h:outputLabel>
-					<div class="col-sm-10">
-						<h:inputText id="loginField" class="form-control" value="#{loginBean.login}" />
-					</div>
-				</div>
-				<div class="form-group#{not empty loginBean.error ? ' has-error' : ''}">
-					<h:outputLabel for="passwordField" class="col-sm-2 control-label">#{msg.LoginPasswordLabel}</h:outputLabel>
-					<div class="col-sm-10">
-						<h:inputSecret id="passwordField" class="form-control" value="#{loginBean.password}" />
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<div class="btn-toolbar">
-							<h:commandButton id="registerButton" action="#{loginBean.register}" class="btn btn-default" value="#{msg.LoginRegisterButton}" />
-							<h:commandButton id="loginButton" action="#{loginBean.login}" class="btn btn-primary" value="#{msg.LoginLoginButton}" />
-						</div>
-					</div>
-				</div>
-				<c:if test="#{not empty loginBean.error}">
-					<p class="bg-danger">#{msg[loginBean.error.message]}</p>
-				</c:if>
-			</h:form>
-			<h:form id="logoutForm" rendered="#{not empty loginBean.user}">
-				<h:commandButton id="logoutButton" action="#{loginBean.logout}" class="btn btn-default" value="#{msg.LoginLogoutButton}" />
-			</h:form>
-		</h:panelGroup>
+		<f:event type="preRenderView" listener="#{loginBean.redirectIfNotAuthenticated}" />
 	</ui:define>
 </ui:composition>
