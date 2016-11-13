@@ -15,7 +15,6 @@ public class LocaleBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-
 		this.locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
 	}
 
@@ -27,11 +26,9 @@ public class LocaleBean implements Serializable {
 		return this.locale.getLanguage();
 	}
 
-	public String setLanguage(String language, String action) {
-
+	public String setLanguage(String language) {
 		this.locale = new Locale(language);
-
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(this.locale);
-		return String.format("%s?faces-redirect=true", action);
+		return "accountList?faces-redirect=true";
 	}
 }

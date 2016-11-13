@@ -26,7 +26,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<h:link outcome="login" class="navbar-brand">#{msg.ApplicationName}</h:link>
+						<h:link outcome="accountList" class="navbar-brand">#{msg.ApplicationName}</h:link>
 					</div>
 					<div class="collapse navbar-collapse" id="navbar-collapse">
 						<nav>
@@ -37,9 +37,9 @@
 							</ul>
 						</nav>
 						<h:form id="navLocaleForm" class="navbar-text navbar-right">
-							<h:commandLink action="#{localeBean.setLanguage('fr', 'hello')}" value="Français" /> |
-							<h:commandLink action="#{localeBean.setLanguage('de', 'hello')}" value="Deutsch" /> |
-							<h:commandLink action="#{localeBean.setLanguage('en', 'hello')}" value="English" />
+							<h:commandLink action="#{localeBean.setLanguage('fr')}" value="Français" /> |
+							<h:commandLink action="#{localeBean.setLanguage('de')}" value="Deutsch" /> |
+							<h:commandLink action="#{localeBean.setLanguage('en')}" value="English" />
 						</h:form>
 					</div>
 				</div>
