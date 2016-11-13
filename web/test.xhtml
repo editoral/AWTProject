@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:custom="http://myfaces.benoist.ch/custom"
+      xmlns:mylib="http://java.sun.com/jsf/composite/components/mylib"
+>
+<head><title>head</title></head>
+
+<body>
+<f:view>
+  <h:form>
+
+     <h:panelGrid columns="1">
+       <mylib:input2 label="Name" value="#{module.name}" />
+     <mylib:input2 label="Number" value="#{module.number}" />
+     <mylib:input2 label="ECTS" value="#{module.ects}" />
+     <h:commandButton value="Add module"
+            actionListener="#{moduleDictionary.addModule}" />
+     </h:panelGrid>
+
+
+  </h:form>
+</f:view>
+</body>
+ 
+</html>

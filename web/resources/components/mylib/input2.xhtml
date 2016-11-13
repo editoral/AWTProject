@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+  <!-- INTERFACE -->
+  <composite:interface>
+    <composite:attribute name="label"/>
+    <composite:attribute name="value"/>        
+  </composite:interface>
+
+<composite:implementation>
+	<h:outputLabel for="passwordField" class="col-sm-2 control-label">#{cc.attrs.label}</h:outputLabel>
+	<div class="col-sm-10">
+		<h:inputText id="passwordField" class="form-control" value="#{cc.attrs.value}" />
+	</div>
+</composite:implementation>
+</html> 

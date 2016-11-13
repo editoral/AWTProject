@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:custom="http://myfaces.benoist.ch/custom"
+ 	xmlns:mylib="http://java.sun.com/jsf/composite/components/mylib"
+>
+<ui:composition template="template.xhtml">
+	<ui:define name="main">
+		<h:panelGroup layout="block" rendered="#{not empty loginBean.user}">
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<h2 class="panel-title">#{msg.AccountsTitle}</h2>
+					<h:form>
+						<h:commandButton id="createAccount" action="#{accountBean.createForm}" class="btn btn-default" value="#{msg.AccountCreateButton}" />
+					</h:form>
+				</div>
+				<div class="panel-body">
+					#{msg.AccountsContent}
+			       <h:form>
+			       		<div class="row">
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accTitle}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accWebsite}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accUsername}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.accPassword}" style="font-weight:bold" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{msg.actions}" style="font-weight:bold" />
+			          		</div>
+			            </div>
+			          <ui:repeat var="acc" value="#{accountBean.accountList}">
+			          	<div class="row">
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.title}" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.website}" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.username}" />
+			          		</div>
+			          		<div class="col-md-2">
+			          			<h:outputText value="#{acc.password}" />
+			          		</div>
+			          		<div class="col-md-4">
+			          			<div class="btn-toolbar">
+									<h:commandButton action="#{accountBean.edit}" value="#{msg.editButton}" class="btn btn-primary">
+										<f:param name="action" value="#{acc.id}" />
+									</h:commandButton>
+				          			<h:commandButton action="#{accountBean.delete}" value="#{msg.deleteButton}" class="btn btn-primary">
+										<f:param name="action" value="#{acc.id}" />
+									</h:commandButton>	
+								</div>							
+			          		</div>
+			            </div>
+			          </ui:repeat>
+			        </h:form>
+				</div>
+			</div>
+		</h:panelGroup>
+		<f:event type="preRenderView" listener="#{loginBean.redirectIfNotAuthenticated}" />
+	</ui:define>
+</ui:composition>
+</html>

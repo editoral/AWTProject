@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:custom="http://myfaces.benoist.ch/custom"
+ 	xmlns:mylib="http://java.sun.com/jsf/composite/components/mylib"
+>
+<ui:composition template="template.xhtml">
+	<ui:define name="main">
+		<h2>#{msg.LoginTitle}</h2>
+		<h:form id="loginForm" class="form-horizontal" rendered="#{empty loginBean.user}">
+			<div class="form-group#{not empty loginBean.error ? ' has-error' : ''}">
+				<h:outputLabel for="loginField" class="col-sm-2 control-label">#{msg.LoginLoginLabel}</h:outputLabel>
+				<div class="col-sm-10">
+					<h:inputText id="loginField" class="form-control" value="#{loginBean.login}" />
+				</div>
+			</div>
+			<div class="form-group#{not empty loginBean.error ? ' has-error' : ''}">
+				<h:outputLabel for="passwordField" class="col-sm-2 control-label">#{msg.LoginPasswordLabel}</h:outputLabel>
+				<div class="col-sm-10">
+					<h:inputSecret id="passwordField" class="form-control" value="#{loginBean.password}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<div class="btn-toolbar">
+						<h:commandButton id="registerButton" action="#{loginBean.register}" class="btn btn-default" value="#{msg.LoginRegisterButton}" />
+						<h:commandButton id="loginButton" action="#{loginBean.login}" class="btn btn-primary" value="#{msg.LoginLoginButton}" />
+					</div>
+				</div>
+			</div>
+			<c:if test="#{not empty loginBean.error}">
+				<p class="bg-danger">#{msg[loginBean.error.message]}</p>
+			</c:if>
+		</h:form>
+		<h:form id="logoutForm" rendered="#{not empty loginBean.user}">
+			<h:commandButton id="logoutButton" action="#{loginBean.logout}" class="btn btn-default" value="#{msg.LoginLogoutButton}" />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
