@@ -31,7 +31,7 @@
 			          		<div class="col-md-2">
 			          			<h:outputText value="#{msg.accUsername}" style="font-weight:bold" />
 			          		</div>
-			          		<div class="col-md-2">
+			          		<div class="col-md-5">
 			          			<h:outputText value="#{msg.accPassword}" style="font-weight:bold" />
 			          		</div>
 			          		<div class="col-md-2">
@@ -49,8 +49,8 @@
 			          		<div class="col-md-2">
 			          			<h:outputText value="#{acc.username}" />
 			          		</div>
-			          		<div class="col-md-2">
-			          			<h:outputText value="#{acc.password}" />
+			          		<div class="col-md-5">
+			          			<mylib:decrypt label="Password" encrypted="#{acc.password}" number="#{acc.id}"/>
 			          		</div>
 			          		<div class="col-md-4">
 			          			<div class="btn-toolbar">

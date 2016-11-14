@@ -15,6 +15,9 @@
 			<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 			<h:outputScript name="js/aes.js" />
+			<h:outputScript name="js/sha256.js" />
+			<h:outputScript name="js/sha512.js" />
+			<h:outputScript name="js/pbkdf2.js" />
 			<h:outputScript name="js/main.js" />
 		</h:head>
 		<h:body>
@@ -38,8 +41,8 @@
 							</ul>
 						</nav>
 						<h:form id="navLocaleForm" class="navbar-text navbar-right">
-							<h:commandLink action="#{localeBean.setLanguage('fr')}" value="Français" /> |
-							<h:commandLink action="#{localeBean.setLanguage('de')}" value="Deutsch" /> |
+							<h:commandLink action="#{localeBean.setLanguage('fr')}" value="Français" /> | 
+							<h:commandLink action="#{localeBean.setLanguage('de')}" value="Deutsch" /> | 
 							<h:commandLink action="#{localeBean.setLanguage('en')}" value="English" />
 						</h:form>
 					</div>
@@ -47,18 +50,15 @@
 			</header>
 			<div class="container">
 				<div class="row">
-					<main class="col-md-9">
+					<main class="col-md-12">
 						<ui:insert name="main"/>
 					</main>
-					<aside class="col-md-3">
-						<ui:insert name="aside"/>
-					</aside>
 				</div>
 			</div>
 			<footer class="navbar navbar-default navbar-fixed-bottom">
 				<div class="container">
 					<p class="navbar-text">
-						&#169; 2015 #{msg.ApplicationCopyrightOwner}
+						&#169; 2016 #{msg.ApplicationCopyrightOwner}
 					</p>
 					<h:form id="navLoginForm" class="navbar-form navbar-right" rendered="#{empty loginBean.user}">
 						<div class="form-group form-group-sm#{not empty loginBean.error ? ' has-error' : ''}">
@@ -71,14 +71,13 @@
 						</div>
 						<div class="form-group">
 							<div class="btn-toolbar btn-group-sm">
-								<h:commandButton id="registerButton" action="register?faces-redirect=true" class="btn btn-default" value="#{msg.LoginRegisterButton}" />
-								<h:commandButton id="loginButton" action="#{loginBean.login}" class="btn btn-primary" value="#{msg.LoginLoginButton}" />
+								<h:commandButton id="loginButton" action="#{loginBean.login}" class="btn btn-primary storePasswordButton" value="#{msg.LoginLoginButton}" />
 							</div>
 						</div>
 					</h:form>
 					<h:form id="navLogoutForm" class="navbar-text navbar-right" rendered="#{not empty loginBean.user}">
-						logged in as #{loginBean.login} |
-						<h:commandLink id="logoutButton" action="#{loginBean.logout}" class="navbar-link" value="#{msg.LoginLogoutButton}" />
+						#{loginBean.login} |
+						<h:commandButton id="logoutButton" action="#{loginBean.logout}" class="btn btn-default clearPasswordButton" value="#{msg.LoginLogoutButton}" />
 					</h:form>
 				</div>
 			</footer>
