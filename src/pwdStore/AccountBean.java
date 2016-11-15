@@ -48,6 +48,8 @@ public class AccountBean implements Serializable {
 	private String website;
 	private String username;
 	private String password;
+	private String iv;
+	private String salt;
 	
 	public String createForm() {
 		id = null;
@@ -60,6 +62,9 @@ public class AccountBean implements Serializable {
 		acc.setWebsite(website);
 		acc.setUsername(username);
 		acc.setPassword(password);
+		acc.setIv(iv);
+		acc.setSalt(salt);
+		System.out.println(iv);
 		acc.setUser(loginBean.getLogin());
 		try {
 			if(id != null) {
@@ -72,6 +77,8 @@ public class AccountBean implements Serializable {
 			this.website = null;
 			this.username = null;
 			this.password = null;
+			this.iv = null;
+			this.salt = null;
 			this.id = 0;
 			return "accountList?faces-redirect=true";
 		} catch (Exception e) {
@@ -91,6 +98,8 @@ public class AccountBean implements Serializable {
 			this.website = acc.getWebsite();
 			this.username = acc.getUsername();
 			this.password = acc.getPassword();
+			this.iv = acc.getIv();
+			this.salt = acc.getSalt();
 		} catch (Exception e) {
 			this.error = ErrorType.DATABASE;
 		}
@@ -159,13 +168,23 @@ public class AccountBean implements Serializable {
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
 	}
-
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+	public String getIv() {
+		return iv;
+	}
+	public void setIv(String iv) {
+		this.iv = iv;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 }

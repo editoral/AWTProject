@@ -9,14 +9,21 @@
   <composite:interface>
     <composite:attribute name="name"/>
     <composite:attribute name="encrypted" />
+    <composite:attribute name="iv" />
     <composite:attribute name="salt" />     
   </composite:interface>
 
 <composite:implementation>
 	<div class="form-group">
-		<h:outputLabel for="passwordFieldAccount" class="col-sm-2 control-label">#{cc.attrs.label}</h:outputLabel>
+		<h:outputLabel for="passwordFieldEnc" class="col-sm-2 control-label">#{cc.attrs.label}</h:outputLabel>
 		<div class="col-sm-8">
-			<h:inputText id="passwordFieldAccount" class="form-control plainPassword"/>
+			<h:inputText id="passwordFieldEnc" class="form-control plainPassword"/>
+			<div class="hiddenSalt">
+				<h:inputHidden type="hidden" value="#{cc.attrs.salt}" />
+			</div>
+			<div class="hiddenIV">
+				<h:inputHidden type="hidden" value="#{cc.attrs.iv}" />
+			</div>	
 		</div>
 		<div class="col-sm-2">
 			<h:commandButton class="btn btn-primary generatePassword" onclick="return false;" value="#{msg.generatePassword}" />
@@ -24,7 +31,7 @@
 	</div>
 	<div class="form-group#{not empty accountBean.error ? ' has-error' : ''}">
 		<h:outputLabel for="passwordEnc" class="col-sm-2 control-label">Encripted:</h:outputLabel>
-		<div class="col-sm-10">
+		<div class="col-sm-8 readonly">
 			<h:inputText readonly="readonly" id="passwordEnc" class="form-control encryptedPassword" value="#{cc.attrs.encrypted}" />
 		</div>
 	</div>

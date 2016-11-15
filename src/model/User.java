@@ -1,5 +1,7 @@
 package model;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 
 import model.DataAccess;
@@ -8,6 +10,7 @@ public class User {
 	private Integer id;
 	private String username;
 	private String password;
+	private String salt;
 	
 	public Integer getId() {
 		return id;
@@ -18,20 +21,28 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword(String password) throws Exception {
+		this.password = this.salt + this.password;
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(password.getBytes("UTF-8"));
+		byte[] digest = md.digest();
+		this.password = String.format("%064x", new java.math.BigInteger(1, digest));
 	}
-	
 	public String getUsername() {
 		return username;
 	}
-	
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}	
 	
 	public boolean save() throws Exception {
-		String query = "INSERT INTO user (username,password) VALUES ('" + this.username + "','" + this.password + "')";
+		String query = "INSERT INTO user (username,password,salt) VALUES ('" + this.username + "','" + this.password + "','" + this.salt + "')";
 		DataAccess acc = new DataAccess();
 		return acc.executeUpdate(query);
 	}
@@ -43,6 +54,7 @@ public class User {
 			if(result.next()){
 				this.username = result.getString("username");
 				this.password = result.getString("password");
+				this.salt = result.getString("salt");
 			}
 			success = true;
 		} catch (Exception e) {
@@ -52,8 +64,13 @@ public class User {
 		return success;
 	}
 	
-	public boolean validatePassword(String password) {
-		return this.password.equals(password);
+	public boolean validatePassword(String password) throws Exception {
+		String test = this.salt + password;
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(test.getBytes("UTF-8"));
+		byte[] digest = md.digest();
+		test = String.format("%064x", new java.math.BigInteger(1, digest));
+		return this.password.equals(test);
 	}
 	
 	private ResultSet getUser(String username) throws Exception {

@@ -14,7 +14,7 @@ $(function() {
     });
     
     $('.generatePassword').click(function() {
-    	var random = generateRandom();
+    	var random = generateRandom().toString();
     	$('.plainPassword').val(random);
     	onPlainPasswordchange(random);
     });
@@ -22,16 +22,22 @@ $(function() {
     $('.showPassword').click(function() {
     	var id = $(this).data('id');
     	var enc = $(this).siblings('.hiddenAccPassword').val();
+    	var salt = $(this).siblings('.hiddenSalt').children().val();
+    	var iv = $(this).siblings('.hiddenIV').children().val();
     	var master = sessionStorage.getItem('master');
-    	var decrypted = decryption(enc, master);
-    	$(this).siblings('.outputPassword').val(decrypted);
+    	var decrypted = decryption(enc, master, salt, iv);
+    	$(this).siblings('.outputPassword').html(decrypted);
     	$(this).css('visibility','hidden');
     });    
+    
+    $('.readonly').children().attr('readonly','readonly');
     
     var onPlainPasswordchange = function(plain) {
     	var masterPassword = sessionStorage.getItem('master');
     	var obj = encryption(plain, masterPassword);
     	$('.encryptedPassword').val(obj.enc);
+    	$('.hiddenSalt').children().val(obj.salt.toString());
+    	$('.hiddenIV').children().val(obj.iv.toString());
     }
     
 });
@@ -42,7 +48,7 @@ var encryption = function(message, key) {
 	var salt = CryptoJS.lib.WordArray.random(512/8);
 	var iv = CryptoJS.lib.WordArray.random(512/8);
 	var key512Bits1000Iterations = CryptoJS.PBKDF2(key, salt, { keySize: 512/32, iterations: 1000 });
-	var encrypted = CryptoJS.AES.encrypt('test',key512Bits1000Iterations , { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+	var encrypted = CryptoJS.AES.encrypt(message,key512Bits1000Iterations , { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
 	var decrypted = CryptoJS.AES.decrypt(encrypted,key512Bits1000Iterations , { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
 	var resultString = decrypted.toString(CryptoJS.enc.Utf8);
 	var result = {

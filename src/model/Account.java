@@ -13,6 +13,8 @@ public class Account {
 	private String website;
 	private String username;
 	private String password;
+	private String iv;
+	private String salt;
 	
 	public int getId() {
 		return id;
@@ -50,15 +52,27 @@ public class Account {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	public String getIv() {
+		return iv;
+	}
+	public void setIv(String iv) {
+		this.iv = iv;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
 	public boolean save() throws Exception {
-		String query = "INSERT INTO account (user,title,website,username,password) VALUES ('" + this.user + "','" + this.title + "','" + this.website + "','" + this.username + "','" + this.password + "')";
+		String query = "INSERT INTO account (user,title,website,username,password,iv,salt) VALUES ('" + this.user + "','" + this.title + "','" + this.website + "','" + this.username + "','" + this.password + "','" + this.iv + "','" + this.salt + "')";
 		DataAccess acc = new DataAccess();
 		return acc.executeUpdate(query);
 	}
 	
 	public boolean update() throws Exception {
-		String query = "UPDATE account SET title='" + this.title + "', website='" + this.website + "', username='" + this.username + "', password='" + this.password + "' WHERE id='" + this.id + "'";;
+		String query = "UPDATE account SET title='" + this.title + "', website='" + this.website + "', username='" + this.username + "', password='" + this.password + "', iv='" + this.iv + "', salt='" + this.salt + "' WHERE id='" + this.id + "'";;
 		DataAccess acc = new DataAccess();
 		return acc.executeUpdate(query);		
 	}
@@ -81,6 +95,8 @@ public class Account {
 			acc.username = res.getString("username");
 			acc.website = res.getString("website");
 			acc.password = res.getString("password");
+			acc.iv = res.getString("iv");
+			acc.salt = res.getString("salt");
 		}
 		return acc;		
 	}
@@ -98,6 +114,8 @@ public class Account {
 			acc.username = res.getString("username");
 			acc.website = res.getString("website");
 			acc.password = res.getString("password");
+			acc.iv = res.getString("iv");
+			acc.salt = res.getString("salt");
 			result.add(acc);
 		}
 		return result;

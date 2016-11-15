@@ -10,12 +10,18 @@
     <composite:attribute name="decrypted" />
     <composite:attribute name="encrypted" />
     <composite:attribute name="salt"/> 
-    <composite:attribute name="number"/>    
+    <composite:attribute name="iv" />   
   </composite:interface>
 
 <composite:implementation>
+	<h:outputText class="outputPassword" />
 	<input type="hidden" class="hiddenAccPassword" value="#{cc.attrs.encrypted}" />
-	<button data-id="#{cc.attrs.number}" class="btn btn-primary showPassword" onclick="return false;" >#{msg.showPassword}</button>
-	<h:outputText class="#{cc.attrs.number} outputPassword" />
+	<div class="hiddenSalt">
+		<h:inputHidden type="hidden" value="#{cc.attrs.salt}" />
+	</div>
+	<div class="hiddenIV">
+		<h:inputHidden type="hidden" value="#{cc.attrs.iv}" />
+	</div>	
+	<button class="btn btn-primary showPassword" onclick="return false;" >#{msg.showPassword}</button>
 </composite:implementation>
 </html> 
