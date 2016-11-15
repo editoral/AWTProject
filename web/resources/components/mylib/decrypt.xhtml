@@ -14,8 +14,8 @@
   </composite:interface>
 
 <composite:implementation>
-	<h:inputHidden value="#{cc.attrs.encrypted}" />
+	<input type="hidden" class="hiddenAccPassword" value="#{cc.attrs.encrypted}" />
 	<button data-id="#{cc.attrs.number}" class="btn btn-primary showPassword" onclick="return false;" >#{msg.showPassword}</button>
-	<h:outputText class="#{cc.attrs.number}outputPassword" />
+	<h:outputText class="#{cc.attrs.number} outputPassword" />
 </composite:implementation>
 </html> 

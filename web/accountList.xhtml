@@ -12,9 +12,9 @@
 	<ui:define name="main">
 		<h:panelGroup layout="block" rendered="#{not empty loginBean.user}">
 			<div class="panel panel-danger">
-				<div class="panel-heading">
-					<h2 class="panel-title">#{msg.AccountsTitle}</h2>
+				<div class="panel-heading">			
 					<h:form>
+						<h2 class="panel-title col-md-8">#{msg.AccountsTitle}</h2>
 						<h:commandButton id="createAccount" action="#{accountBean.createForm}" class="btn btn-default" value="#{msg.AccountCreateButton}" />
 					</h:form>
 				</div>
@@ -31,7 +31,7 @@
 			          		<div class="col-md-2">
 			          			<h:outputText value="#{msg.accUsername}" style="font-weight:bold" />
 			          		</div>
-			          		<div class="col-md-5">
+			          		<div class="col-md-4">
 			          			<h:outputText value="#{msg.accPassword}" style="font-weight:bold" />
 			          		</div>
 			          		<div class="col-md-2">
@@ -49,10 +49,10 @@
 			          		<div class="col-md-2">
 			          			<h:outputText value="#{acc.username}" />
 			          		</div>
-			          		<div class="col-md-5">
+			          		<div class="col-md-4">
 			          			<mylib:decrypt label="Password" encrypted="#{acc.password}" number="#{acc.id}"/>
 			          		</div>
-			          		<div class="col-md-4">
+			          		<div class="col-md-2">
 			          			<div class="btn-toolbar">
 									<h:commandButton action="#{accountBean.edit}" value="#{msg.editButton}" class="btn btn-primary">
 										<f:param name="action" value="#{acc.id}" />

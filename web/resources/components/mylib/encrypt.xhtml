@@ -13,16 +13,20 @@
   </composite:interface>
 
 <composite:implementation>
-	<h:outputLabel for="passwordFieldAccount" class="col-sm-2 control-label">#{cc.attrs.label}</h:outputLabel>
-	<div class="col-sm-8">
-		<h:inputText id="passwordFieldAccount" class="form-control plainPassword"/>
+	<div class="form-group">
+		<h:outputLabel for="passwordFieldAccount" class="col-sm-2 control-label">#{cc.attrs.label}</h:outputLabel>
+		<div class="col-sm-8">
+			<h:inputText id="passwordFieldAccount" class="form-control plainPassword"/>
+		</div>
+		<div class="col-sm-2">
+			<h:commandButton class="btn btn-primary generatePassword" onclick="return false;" value="#{msg.generatePassword}" />
+		</div>
 	</div>
-	<div class="col-sm-2">
-		<h:commandButton class="btn btn-primary generatePassword" onclick="return false;" value="#{msg.generatePassword}" />
-	</div>
-	<h:outputLabel for="passwordEnc" class="col-sm-2 control-label">Encripted:</h:outputLabel>
-	<div class="col-sm-10">
-		<h:inputText readonly="readonly" id="passwordEnc" class="form-control encryptedPassword" value="#{cc.attrs.encrypted}" />
+	<div class="form-group#{not empty accountBean.error ? ' has-error' : ''}">
+		<h:outputLabel for="passwordEnc" class="col-sm-2 control-label">Encripted:</h:outputLabel>
+		<div class="col-sm-10">
+			<h:inputText readonly="readonly" id="passwordEnc" class="form-control encryptedPassword" value="#{cc.attrs.encrypted}" />
+		</div>
 	</div>
 </composite:implementation>
 </html> 

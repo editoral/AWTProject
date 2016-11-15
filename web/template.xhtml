@@ -41,8 +41,8 @@
 							</ul>
 						</nav>
 						<h:form id="navLocaleForm" class="navbar-text navbar-right">
-							<h:commandLink action="#{localeBean.setLanguage('fr')}" value="Français" /> | 
-							<h:commandLink action="#{localeBean.setLanguage('de')}" value="Deutsch" /> | 
+							<h:commandLink action="#{localeBean.setLanguage('fr')}" value="Français" /> | &nbsp; 
+							<h:commandLink action="#{localeBean.setLanguage('de')}" value="Deutsch" /> | &nbsp;
 							<h:commandLink action="#{localeBean.setLanguage('en')}" value="English" />
 						</h:form>
 					</div>
@@ -76,7 +76,7 @@
 						</div>
 					</h:form>
 					<h:form id="navLogoutForm" class="navbar-text navbar-right" rendered="#{not empty loginBean.user}">
-						#{loginBean.login} |
+						#{loginBean.login}
 						<h:commandButton id="logoutButton" action="#{loginBean.logout}" class="btn btn-default clearPasswordButton" value="#{msg.LoginLogoutButton}" />
 					</h:form>
 				</div>
