@@ -14,16 +14,16 @@
 		<h:form id="loginForm" class="form-horizontal" rendered="#{empty loginBean.user}">
 			<div class="form-group#{not empty loginBean.error ? ' has-error' : ''}">
 				<h:outputLabel for="loginField" class="col-sm-2 control-label">#{msg.LoginLoginLabel}</h:outputLabel>
-				<div class="col-sm-10">
+				<div class="col-sm-8">
 					<h:inputText id="loginField" class="form-control" value="#{loginBean.login}" />
 				</div>
 			</div>
-			<mylib:encrypt label="Password" encrypted="#{loginBean.password}"/>
+			<mylib:encryptLogin label="Password" encrypted="#{loginBean.password}"/>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<div class="btn-toolbar">
-						<h:commandButton id="registerButton" action="#{loginBean.register}" class="btn btn-default" value="#{msg.LoginRegisterButton}" />
-						<h:commandButton id="loginButton" action="#{loginBean.login}" class="btn btn-primary storePasswordButton" value="#{msg.LoginLoginButton}" />
+						<h:commandButton id="registerButton" action="#{loginBean.register}" class="btn btn-default registerButton" value="#{msg.LoginRegisterButton}" />
+						<h:commandButton id="loginButton" action="#{loginBean.login}" class="btn btn-primary storePasswordButton loginButton" value="#{msg.LoginLoginButton}" />
 					</div>
 				</div>
 			</div>

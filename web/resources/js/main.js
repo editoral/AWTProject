@@ -14,6 +14,7 @@ $(function() {
     });
     
     $('.generatePassword').click(function() {
+    	$('.saveButton').attr('disabled','disabled');
     	var random = generateRandom().toString();
     	$('.plainPassword').val(random);
     	onPlainPasswordchange(random);
@@ -32,12 +33,23 @@ $(function() {
     
     $('.readonly').children().attr('readonly','readonly');
     
+    $('.plainPasswordLogin').change(function() {
+    	var plain = $( this ).val();
+    	$('.loginButton').attr('disabled','disabled');
+    	$('.registerButton').attr('disabled','disabled');
+    	$('.hiddenLoginHash').children().val(hash2(plain).toString());
+    	$('.loginButton').removeAttr('disabled');
+    	$('.registerButton').removeAttr('disabled');
+    });
+    
     var onPlainPasswordchange = function(plain) {
+    	$('.saveButton').attr('disabled','disabled');
     	var masterPassword = sessionStorage.getItem('master');
     	var obj = encryption(plain, masterPassword);
     	$('.encryptedPassword').val(obj.enc);
     	$('.hiddenSalt').children().val(obj.salt.toString());
     	$('.hiddenIV').children().val(obj.iv.toString());
+    	$('.saveButton').removeAttr('disabled');
     }
     
 });
@@ -66,10 +78,10 @@ var decryption = function(enc, key, salt, iv) {
 	return decrypted.toString(CryptoJS.enc.Utf8);
 }
 var hash1 = function(message) {
-	return CryptoJS.SHA256("Message");
+	return CryptoJS.SHA256(message);
 }
 var hash2 = function(message) {
-	return CryptoJS.SHA512("Message");
+	return CryptoJS.SHA512(message);
 }
 var validateHash = function(message, expected) {
 	

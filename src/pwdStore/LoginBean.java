@@ -56,6 +56,7 @@ public class LoginBean implements Serializable {
 			SecureRandom random = new SecureRandom();
 			this.user.setSalt(new BigInteger(130, random).toString(32));
 			try {
+				System.out.println("User PWD: " + this._userPassword);
 				this.user.setPassword(this._userPassword);
 				if(!this.user.save()) {
 					this.error = ErrorType.USER_EXISTS;

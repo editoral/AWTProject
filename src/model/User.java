@@ -22,11 +22,14 @@ public class User {
 		return password;
 	}
 	public void setPassword(String password) throws Exception {
-		this.password = this.salt + this.password;
+		System.out.println("Register salt: " + this.salt);
+		System.out.println("Register bevor: " + password);
+		this.password = this.salt + password;
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(password.getBytes("UTF-8"));
+		md.update(this.password.getBytes("UTF-8"));
 		byte[] digest = md.digest();
 		this.password = String.format("%064x", new java.math.BigInteger(1, digest));
+		System.out.println("Register: " + this.password);
 	}
 	public String getUsername() {
 		return username;
@@ -70,6 +73,7 @@ public class User {
 		md.update(test.getBytes("UTF-8"));
 		byte[] digest = md.digest();
 		test = String.format("%064x", new java.math.BigInteger(1, digest));
+		System.out.println("Test: " + test);
 		return this.password.equals(test);
 	}
 	

@@ -60,24 +60,10 @@
 					<p class="navbar-text">
 						&#169; 2016 #{msg.ApplicationCopyrightOwner}
 					</p>
-					<h:form id="navLoginForm" class="navbar-form navbar-right" rendered="#{empty loginBean.user}">
-						<div class="form-group form-group-sm#{not empty loginBean.error ? ' has-error' : ''}">
-							<h:inputText id="loginField" class="form-control" value="#{loginBean.login}">
-							</h:inputText>
-						</div>
-						<div class="form-group form-group-sm#{not empty loginBean.error ? ' has-error' : ''}">
-							<h:inputSecret id="passwordField" class="form-control" value="#{loginBean.password}">
-							</h:inputSecret>
-						</div>
-						<div class="form-group">
-							<div class="btn-toolbar btn-group-sm">
-								<h:commandButton id="loginButton" action="#{loginBean.login}" class="btn btn-primary storePasswordButton" value="#{msg.LoginLoginButton}" />
-							</div>
-						</div>
-					</h:form>
 					<h:form id="navLogoutForm" class="navbar-text navbar-right" rendered="#{not empty loginBean.user}">
 						#{loginBean.login}
 						<h:commandButton id="logoutButton" action="#{loginBean.logout}" class="btn btn-default clearPasswordButton" value="#{msg.LoginLogoutButton}" />
+						<h:commandButton id="changeButton" action="#{loginBean.changePassword}" class="btn btn-default changePasswordButton" value="#{msg.changePassword}" />
 					</h:form>
 				</div>
 			</footer>
