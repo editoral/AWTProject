@@ -5,7 +5,7 @@ $(function() {
     });
     
     $('.storePasswordButton').click(function() {
-    	var master = $('.loginField').val();
+    	var master = $('.plainPasswordLogin').val();
     	sessionStorage.setItem('master', hash1(master));
     });
     
@@ -13,6 +13,7 @@ $(function() {
     	sessionStorage.removeItem('master');
     });
     
+    $('.saveButton').attr('disabled','disabled');
     $('.generatePassword').click(function() {
     	$('.saveButton').attr('disabled','disabled');
     	var random = generateRandom().toString();
@@ -37,9 +38,11 @@ $(function() {
     	var plain = $( this ).val();
     	$('.loginButton').attr('disabled','disabled');
     	$('.registerButton').attr('disabled','disabled');
+    	$('.reEncrypt').attr('disabled','disabled');
     	$('.hiddenLoginHash').children().val(hash2(plain).toString());
     	$('.loginButton').removeAttr('disabled');
     	$('.registerButton').removeAttr('disabled');
+    	$('.reEncrypt').removeAttr('disabled');
     });
     
     var onPlainPasswordchange = function(plain) {
@@ -52,6 +55,22 @@ $(function() {
     	$('.saveButton').removeAttr('disabled');
     }
     
+    $('.changeButton').attr('disabled','disabled');
+    $('.reEncrypt').click(function() {
+    	$('.accPassword').each(function() {
+        	var enc = $(this).children('.hiddenAccPassword').children().val();
+        	var salt = $(this).children('.hiddenSalt').children().val();
+        	var iv = $(this).children('.hiddenIV').children().val();
+        	var master = sessionStorage.getItem('master');
+        	var decrypted = decryption(enc, master, salt, iv);
+        	master = hash1($('.plainPasswordLogin').val());
+        	var obj = encryption(decrypted, master.toString());
+        	$(this).children('.hiddenAccPassword').children().val(obj.enc.toString());
+        	$(this).children('.hiddenSalt').children().val(obj.salt.toString());
+        	$(this).children('.hiddenIV').children().val(obj.iv.toString());
+    	});
+    	$('.changeButton').removeAttr('disabled');
+    });
 });
 
 //*** Wrapper ***//

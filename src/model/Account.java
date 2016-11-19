@@ -72,7 +72,7 @@ public class Account {
 	}
 	
 	public boolean update() throws Exception {
-		String query = "UPDATE account SET title='" + this.title + "', website='" + this.website + "', username='" + this.username + "', password='" + this.password + "', iv='" + this.iv + "', salt='" + this.salt + "' WHERE id='" + this.id + "'";;
+		String query = "UPDATE account SET title='" + this.title + "', website='" + this.website + "', username='" + this.username + "', password='" + this.password + "', iv='" + this.iv + "', salt='" + this.salt + "' WHERE id='" + this.id + "'";
 		DataAccess acc = new DataAccess();
 		return acc.executeUpdate(query);		
 	}

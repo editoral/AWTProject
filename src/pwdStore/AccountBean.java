@@ -50,6 +50,7 @@ public class AccountBean implements Serializable {
 	private String password;
 	private String iv;
 	private String salt;
+	private ArrayList<Account> accList;
 	
 	public String createForm() {
 		id = null;
@@ -119,17 +120,18 @@ public class AccountBean implements Serializable {
 	}
 	
 	public List<Account> getAccountList() {
-		ArrayList<Account> list = new ArrayList<Account>();
+		accList = new ArrayList<Account>();
 		try {
-			list = Account.getAccounts(loginBean.getLogin());
+			accList = Account.getAccounts(loginBean.getLogin());
 		} catch (Exception e) {
 			this.error = ErrorType.DATABASE;
 		}
-		return list;
+		return accList;
 	}
+
 	
 	// Getter and Setter
-	
+
 	public ErrorType getError() {
 		return error;
 	}

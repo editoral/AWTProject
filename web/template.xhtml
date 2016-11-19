@@ -63,7 +63,7 @@
 					<h:form id="navLogoutForm" class="navbar-text navbar-right" rendered="#{not empty loginBean.user}">
 						#{loginBean.login}
 						<h:commandButton id="logoutButton" action="#{loginBean.logout}" class="btn btn-default clearPasswordButton" value="#{msg.LoginLogoutButton}" />
-						<h:commandButton id="changeButton" action="#{loginBean.changePassword}" class="btn btn-default changePasswordButton" value="#{msg.changePassword}" />
+						<h:commandButton id="changeButton" action="#{loginBean.changePasswordForm}" class="btn btn-default changePasswordButton" value="#{msg.changePassword}" />
 					</h:form>
 				</div>
 			</footer>

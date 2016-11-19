@@ -4,12 +4,17 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import model.Account;
 import model.User;
+import pwdStore.AccountBean.ErrorType;
 
 @ManagedBean(name="loginBean", eager=true)
 @SessionScoped
@@ -35,6 +40,8 @@ public class LoginBean implements Serializable {
 		}
 	}
 
+	private ArrayList<Account> accList;
+	
 	private User user;
 
 	private String _userLogin;
@@ -109,8 +116,55 @@ public class LoginBean implements Serializable {
 		return "accountList?faces-redirect=true";
 	}
 	
+	public String changePassword() {
+
+		this.error = null;
+		if (this._userLogin != null && this._userLogin.length() > 0
+				&& this._userPassword != null && this._userPassword.length() > 0 && this.user != null) {
+			
+			SecureRandom random = new SecureRandom();
+			this.user.setSalt(new BigInteger(130, random).toString(32));
+			try {
+				System.out.println("User PWD: " + this._userPassword);
+				this.user.setPassword(this._userPassword);
+				if(!this.user.update()) {
+					this.error = ErrorType.USER_EXISTS;
+				}
+				for(Account acc : accList) {
+					System.out.println("new Acc Password: " + acc.getPassword());
+					acc.update();
+				}
+			} catch (Exception e) {
+				this.error = ErrorType.DATABASE;
+			};
+			this._userPassword = null;
+		} else {
+			this.error = ErrorType.MISSING_INFORMATION;
+		}
+		this._userLogin = null;
+		this._userPassword = null;
+		this.user = null;
+		return "login?faces-redirect=true";
+
+	}
+	
+	public String changePasswordForm() {
+		return "changePassword?faces-redirect=true";
+	}
+	
 	public String registerRedirect() {
 		return "register?faces-redirect=true";
+	}
+	
+	//Dublicate Method from Account Bean to prevent "Detected cyclic reference to managedBean" Error
+	public List<Account> getAccountList() {
+		accList = new ArrayList<Account>();
+		try {
+			accList = Account.getAccounts(this.getLogin());
+		} catch (Exception e) {
+			this.error = ErrorType.DATABASE;
+		}
+		return accList;
 	}
 	
 	public void redirectIfNotAuthenticated() throws IOException {

@@ -50,6 +50,12 @@ public class User {
 		return acc.executeUpdate(query);
 	}
 	
+	public boolean update() throws Exception {
+		String query = "UPDATE user SET password='" + this.password + "', salt='" + this.salt + "' WHERE username='" + this.username + "'";
+		DataAccess acc = new DataAccess();
+		return acc.executeUpdate(query);
+	}
+	
 	public boolean loadUser(String username) throws Exception {
 		ResultSet result = this.getUser(username);
 		boolean success = false;

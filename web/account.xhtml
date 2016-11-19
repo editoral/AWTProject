@@ -31,7 +31,7 @@
 						<h:inputText id="usernameField" class="form-control" value="#{accountBean.username}" />
 					</div>
 				</div>	
-				<mylib:encrypt label="Password" encrypted="#{accountBean.password}" iv="#{accountBean.iv}" salt="#{accountBean.salt}"/>
+				<mylib:encrypt label="#{msg.accPassword}" encrypted="#{accountBean.password}" iv="#{accountBean.iv}" salt="#{accountBean.salt}"/>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<div class="btn-toolbar">
