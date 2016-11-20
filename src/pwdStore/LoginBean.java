@@ -53,13 +53,19 @@ public class LoginBean implements Serializable {
 		return this.user != null;
 	}
 
+	//Register new user, in optimal case client sends masterpassword hashed with sha-512
+	//Man in the middle of course controlls javaScript, and for that reason gets all passwords plain
+	//network sniffer can see sha-512 hash send over network (non certificate encryption or broken certificates assumed)
+	//easy solved with rainbow table
+	//with use of salt and expected sha-512 hash result password send by client the userpassword stored in database is relativ safe
+	//attacker with control over database would need a very large rainbowtable to guess this sha-512 hash password + salt (130 random bits)
 	public String register() {
-
 		this.error = null;
 		if (this._userLogin != null && this._userLogin.length() > 0
 				&& this._userPassword != null && this._userPassword.length() > 0) {
 			this.user = new User();
 			this.user.setUsername(this._userLogin);
+			//genereate salt with secure random
 			SecureRandom random = new SecureRandom();
 			this.user.setSalt(new BigInteger(130, random).toString(32));
 			try {
@@ -81,6 +87,8 @@ public class LoginBean implements Serializable {
 		return "login?faces-redirect=true";
 	}
 
+	//Does as expected
+	//Validates send sha-512 hash password against database password
 	public String login() {
 
 		this.error = null;
@@ -107,6 +115,7 @@ public class LoginBean implements Serializable {
 		return "accountList?faces-redirect=true";
 	}
 
+	//very straight forward
 	public String logout() {
 		this.error = null;
 		this.user = null;
@@ -116,6 +125,8 @@ public class LoginBean implements Serializable {
 		return "accountList?faces-redirect=true";
 	}
 	
+	//same code as register. But in addition saves all accounts from accountList.
+	//If clientside encryption done right, the account list contains the account with updated PWD, IV, SALT
 	public String changePassword() {
 
 		this.error = null;
@@ -132,6 +143,7 @@ public class LoginBean implements Serializable {
 				}
 				for(Account acc : accList) {
 					System.out.println("new Acc Password: " + acc.getPassword());
+					//change all account passwords
 					acc.update();
 				}
 			} catch (Exception e) {

@@ -11,6 +11,8 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class LocaleBean implements Serializable {
 
+	//This bean handles multilanguage support. So languages can get changed.
+	
 	private Locale locale;
 
 	@PostConstruct

@@ -56,7 +56,10 @@ public class AccountBean implements Serializable {
 		id = null;
 		return "account?faces-redirect=true";
 	}
-
+	
+	//handles save operation, after save button on account.xhtml was clicked
+	//Expects member values to be properly set by post request from client
+	//IV and Salt are stored in database, reason is the used client side algorithm
 	public String save() {
 		Account acc = new Account();
 		acc.setTitle(title);
@@ -88,7 +91,9 @@ public class AccountBean implements Serializable {
 		return "";
 	}
 	
+	//Edits an existing account, works similar to the save operation, only with preset id
 	public String edit() {
+		//pattern to fetch context params, so id can be retrieved
 		FacesContext fc = FacesContext.getCurrentInstance();
 		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
 		int id = Integer.parseInt(params.get("action"));
@@ -107,6 +112,7 @@ public class AccountBean implements Serializable {
 		return "account?faces-redirect=true";
 	}
 	
+	//Very self explanatory: deletes a given account based on id
 	public void delete() {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
@@ -119,6 +125,7 @@ public class AccountBean implements Serializable {
 		}
 	}
 	
+	//List all accounts for accountList.xhtml
 	public List<Account> getAccountList() {
 		accList = new ArrayList<Account>();
 		try {
